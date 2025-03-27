@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.huffmancoding.Controller">
+   <children>
+      <BorderPane layoutX="-89.0" prefHeight="352.0" prefWidth="375.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-89.0" AnchorPane.rightAnchor="89.0" AnchorPane.topAnchor="0.0">
+         <left>
+            <Pane prefHeight="200.0" prefWidth="150.0" BorderPane.alignment="CENTER" />
+         </left>
+         <center>
+            <Canvas height="300.0" nodeOrientation="INHERIT" width="300.0" BorderPane.alignment="CENTER" fx:id="myCanvas" />
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>
