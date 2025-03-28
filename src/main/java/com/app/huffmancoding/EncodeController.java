@@ -1,15 +1,17 @@
 package com.app.huffmancoding;
 
-import com.almasb.fxgl.input.Input;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+
+import java.util.Map;
 
 public class EncodeController {
 
@@ -20,9 +22,15 @@ public class EncodeController {
     private Canvas myCanvas;
     @FXML
     private TextField input;
-
     @FXML
     private Label bitStringLabel;
+    @FXML
+    private TableView<CharacterCode> tableView; // El TableView definido en el FXML
+    @FXML
+    private TableColumn<CharacterCode, Character> characterColumn; // Columna "Caracter"
+    @FXML
+    private TableColumn<CharacterCode, String> codeColumn; // Columna "Codigo"
+
 
     @FXML
     public void initialize() {
@@ -30,6 +38,7 @@ public class EncodeController {
 //        gc.fillRect(50, 50, 100, 100);
 //        myCanvas.widthProperty().bind(canvasContainer.widthProperty());
 //        myCanvas.heightProperty().bind(canvasContainer.heightProperty());
+        //tableView.getColumns().addAll(caracterColumn, codigoColumn);
     }
 
     private void drawTree(GraphicsContext gc, Node node, double x, double y, double horizontalOffset) {
@@ -65,8 +74,24 @@ public class EncodeController {
 
     public void encode(MouseEvent mouseEvent) {
         GraphicsContext gc = myCanvas.getGraphicsContext2D();
+        gc.clearRect(0, 0, myCanvas.getWidth(), myCanvas.getHeight());
         Response response = new HuffmanCoding().encode(input.getText().toCharArray());
         drawTree(gc, response.getTree(), 250, 50, 200);
         bitStringLabel.setText("cadena de bits: "+ response.getBitString());
+        loadDictionary(response.getDictionary());
+    }
+
+    private void loadDictionary(Map<Character, String> map){
+        tableView.getItems().clear();
+        // Crear las columnas
+        characterColumn.setCellValueFactory(cellData -> {
+            return cellData.getValue().caracterProperty();
+        });
+        codeColumn.setCellValueFactory(cellData -> {
+            return cellData.getValue().codigoProperty();
+        });
+        // Agregar las columnas al TableView
+        map.forEach((key, value) -> tableView.getItems().add(new CharacterCode(key, value)));
+
     }
 }
