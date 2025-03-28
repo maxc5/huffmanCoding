@@ -1,18 +1,16 @@
 package com.app.huffmancoding;
 
+import com.almasb.fxgl.core.collection.Array;
 import com.sun.source.tree.Tree;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 
 
 public class HuffmanCoding {
 
 	public Response encode(char[] input) {
 		Map<Character, Integer> map = new HashMap<Character, Integer>();
-		Map<Character, String> dictionary = new HashMap<Character, String>();
+		List<CharacterCode>dictionary = new ArrayList<CharacterCode>();
 		for (int i = 0; i < input.length; i++)
 			if (map.containsKey(input[i]))
 				map.put(input[i], map.get(input[i]) + 1);
@@ -53,16 +51,21 @@ public class HuffmanCoding {
 		}
 		return decodedMessage.toString();
 	}
-	
-	private String buildBitString(Map<Character, String> dictionary, char[] input) {
+
+	private String buildBitString(List<CharacterCode> dictionary, char[] input) {
 		StringBuilder bitString = new StringBuilder();
-		for (int i = 0; i < input.length; i++) {
-			String value = dictionary.get(input[i]);
-			for (int j = 0; j < value.length(); j++)
-				if (value.charAt(j) == '0')
-					bitString.append(0);
-				else
-					bitString.append(1);
+		for (char c : input) {
+			// Buscar el código correspondiente al carácter en la lista
+			for (CharacterCode entry : dictionary) {
+				if (entry.getCharacter() == c) {
+					String code = entry.getCode();
+					// Convertir cada '0' y '1' a bits (0 y 1 como enteros)
+					for (int j = 0; j < code.length(); j++) {
+						bitString.append(code.charAt(j) == '0' ? 0 : 1);
+					}
+					break; // Salir del bucle una vez encontrado el carácter
+				}
+			}
 		}
 		return bitString.toString();
 	}
@@ -87,13 +90,13 @@ public class HuffmanCoding {
 		return root;
 	}
 
-	private void buildDictionary(Map<Character, String> dictionary, Node tree, String path) {
+	private void buildDictionary(List<CharacterCode> dictionary, Node tree, String path) {
 		if (!tree.isLeafNode()) {
 			buildDictionary(dictionary, tree.getLeft(), path + "0");
 			buildDictionary(dictionary, tree.getRight(), path + "1");
 		} else if (path.isEmpty())
-			dictionary.put(tree.getCharacter(), "1");
+			dictionary.add(new CharacterCode(tree.getCharacter(), "1"));
 		else
-			dictionary.put(tree.getCharacter(), path);
+			dictionary.add(new CharacterCode(tree.getCharacter(), path));
 	}
 }

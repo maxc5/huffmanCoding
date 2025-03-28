@@ -1,5 +1,8 @@
 package com.app.huffmancoding;
 
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -10,7 +13,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.util.Callback;
 
+
+import java.util.List;
 import java.util.Map;
 
 public class EncodeController {
@@ -25,20 +31,34 @@ public class EncodeController {
     @FXML
     private Label bitStringLabel;
     @FXML
-    private TableView<CharacterCode> tableView; // El TableView definido en el FXML
+    private TableView<CharacterCode> tableView;
     @FXML
-    private TableColumn<CharacterCode, Character> characterColumn; // Columna "Caracter"
+    private TableColumn<CharacterCode, Character> characterColumn;
     @FXML
-    private TableColumn<CharacterCode, String> codeColumn; // Columna "Codigo"
+    private TableColumn<CharacterCode, String> codeColumn;
 
 
     @FXML
     public void initialize() {
-//        GraphicsContext gc = myCanvas.getGraphicsContext2D();
-//        gc.fillRect(50, 50, 100, 100);
-//        myCanvas.widthProperty().bind(canvasContainer.widthProperty());
-//        myCanvas.heightProperty().bind(canvasContainer.heightProperty());
-        //tableView.getColumns().addAll(caracterColumn, codigoColumn);
+        characterColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<CharacterCode, Character>, ObservableValue<Character>>() {
+            @Override
+            public ObservableValue<Character> call(TableColumn.CellDataFeatures<CharacterCode, Character> cellData) {
+                return new ReadOnlyObjectWrapper<Character>(cellData.getValue().getCharacter());
+            }
+        });
+        codeColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<CharacterCode, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<CharacterCode, String> cellData) {
+                return new ReadOnlyStringWrapper(cellData.getValue().getCode());
+            }
+        });
+
+//        priceColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Movie, Double>, ObservableValue<Double>>() {
+//            @Override
+//            public ObservableValue<Double> call(TableColumn.CellDataFeatures<Movie, Double> param) {
+//                return param.getValue().priceProperty();
+//            }
+//        });
     }
 
     private void drawTree(GraphicsContext gc, Node node, double x, double y, double horizontalOffset) {
@@ -78,20 +98,9 @@ public class EncodeController {
         Response response = new HuffmanCoding().encode(input.getText().toCharArray());
         drawTree(gc, response.getTree(), 250, 50, 200);
         bitStringLabel.setText("cadena de bits: "+ response.getBitString());
-        loadDictionary(response.getDictionary());
-    }
-
-    private void loadDictionary(Map<Character, String> map){
+        // Limpiar la tabla
         tableView.getItems().clear();
-        // Crear las columnas
-        characterColumn.setCellValueFactory(cellData -> {
-            return cellData.getValue().caracterProperty();
-        });
-        codeColumn.setCellValueFactory(cellData -> {
-            return cellData.getValue().codigoProperty();
-        });
-        // Agregar las columnas al TableView
-        map.forEach((key, value) -> tableView.getItems().add(new CharacterCode(key, value)));
-
+        // Agregar todos los elementos de la lista a la tabla
+        tableView.getItems().addAll(response.getDictionary());
     }
 }

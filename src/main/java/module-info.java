@@ -7,6 +7,7 @@ module com.app.huffmancoding {
     requires org.kordamp.bootstrapfx.core;
     requires com.almasb.fxgl.all;
     requires jdk.compiler;
+    requires java.desktop;
 
     opens com.app.huffmancoding to javafx.fxml;
     exports com.app.huffmancoding;

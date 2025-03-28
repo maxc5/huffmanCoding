@@ -4,35 +4,19 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class CharacterCode {
-    private final SimpleObjectProperty<Character> caracter;
-    private final SimpleStringProperty codigo;
+    private final char character;
+    private final String code;
 
-    public CharacterCode(Character caracter, String codigo) {
-        this.caracter = new SimpleObjectProperty<>(caracter);
-        this.codigo = new SimpleStringProperty(codigo);
+    public CharacterCode(char character, String code) {
+        this.character = character;
+        this.code = code;
     }
 
-    public Character getCaracter() {
-        return caracter.get();
+    public char getCharacter() {
+        return character;
     }
 
-    public void setCaracter(Character caracter) {
-        this.caracter.set(caracter);
-    }
-
-    public SimpleObjectProperty<Character> caracterProperty() {
-        return caracter;
-    }
-
-    public String getCodigo() {
-        return codigo.get();
-    }
-
-    public void setCodigo(String codigo) {
-        this.codigo.set(codigo);
-    }
-
-    public SimpleStringProperty codigoProperty() {
-        return codigo;
+    public String getCode() {
+        return code;
     }
 }
