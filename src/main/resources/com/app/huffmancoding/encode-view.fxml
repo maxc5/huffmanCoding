@@ -20,7 +20,7 @@
 
             <TextField fx:id="input" promptText="ingresa un texto..." style="-fx-pref-width: 400; -fx-background-color: #f8f7f9; -fx-background-radius: 4; -fx-border-color: #6d72c3; -fx-border-radius: 4; -fx-border-width: 1.5; -fx-font-size: 14px; -fx-padding: 5 10;" />
 
-            <Button fx:id="btnEncode" onMouseClicked="#encode" style="-fx-background-color: #6d72c3; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 8 25; -fx-background-radius: 4; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);" text="codificar" />
+            <Button onMouseClicked="#encode" style="-fx-background-color: #6d72c3; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 8 25; -fx-background-radius: 4; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);" text="codificar" />
         </HBox>
     </top>
 
@@ -28,8 +28,8 @@
     <left>
         <TableView fx:id="tableView" maxWidth="300.0" prefHeight="500.0" prefWidth="210.0">
             <columns>
-                <TableColumn fx:id="characterColumn" editable="false" maxWidth="100.0" prefWidth="100.0" resizable="false" sortable="false" text="Caracter" />
-                <TableColumn fx:id="codeColumn" maxWidth="100.0" prefWidth="100.0" resizable="false" text="Codigo" />
+                <TableColumn fx:id="characterColumn" editable="false" maxWidth="100.0" prefWidth="100.0" resizable="false" sortable="false" text="caracter" />
+                <TableColumn fx:id="codeColumn" maxWidth="100.0" prefWidth="100.0" resizable="false" text="codigo" />
             </columns>
          <BorderPane.margin>
             <Insets right="10.0" />
