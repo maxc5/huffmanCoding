@@ -4,10 +4,9 @@ import java.util.*;
 
 
 public class HuffmanCoding {
-
 	public Response encode(char[] input) {
 		Map<Character, Integer> map = new HashMap<Character, Integer>();
-		List<CharacterCode>dictionary = new ArrayList<CharacterCode>();
+		Map<Character, String> dictionary = new HashMap<Character, String>();
 		for (int i = 0; i < input.length; i++)
 			if (map.containsKey(input[i]))
 				map.put(input[i], map.get(input[i]) + 1);
@@ -22,12 +21,12 @@ public class HuffmanCoding {
 		StringBuilder decodedText = new StringBuilder();
 		StringBuilder prefix = new StringBuilder();
 		for (int i = 0; i < bitString.length(); i++) {
-            prefix.append(bitString.charAt(i)); // Agregamos el bit actual al prefijo
-            if (dictionary.containsKey(prefix.toString())) {
-                decodedText.append(dictionary.get(prefix.toString())); // Decodificamos el carácter
-                prefix.setLength(0); // Reiniciamos el prefijo
-            }
-        }
+			prefix.append(bitString.charAt(i)); // Agregamos el bit actual al prefijo
+			if (dictionary.containsKey(prefix.toString())) {
+				decodedText.append(dictionary.get(prefix.toString())); // Decodificamos el carácter
+				prefix.setLength(0); // Reiniciamos el prefijo
+			}
+		}
 		return decodedText.toString();
 	}
 
@@ -49,24 +48,19 @@ public class HuffmanCoding {
 		return decodedMessage.toString();
 	}
 
-	private String buildBitString(List<CharacterCode> dictionary, char[] input) {
+	private String buildBitString(Map<Character, String> dictionary, char[] input) {
 		StringBuilder bitString = new StringBuilder();
-		for (char c : input) {
-			// Buscar el código correspondiente al carácter en la lista
-			for (CharacterCode entry : dictionary) {
-				if (entry.getCharacter() == c) {
-					String code = entry.getCode();
-					// Convertir cada '0' y '1' a bits (0 y 1 como enteros)
-					for (int j = 0; j < code.length(); j++) {
-						bitString.append(code.charAt(j) == '0' ? 0 : 1);
-					}
-					break; // Salir del bucle una vez encontrado el carácter
-				}
-			}
+		for (int i = 0; i < input.length; i++) {
+			String value = dictionary.get(input[i]);
+			for (int j = 0; j < value.length(); j++)
+				if (value.charAt(j) == '0')
+					bitString.append(0);
+				else
+					bitString.append(1);
 		}
 		return bitString.toString();
 	}
-	
+
 	private Node buildTree(Map<Character, Integer> map) {
 		PriorityQueue<Node> queue = new PriorityQueue<>();
 		Iterator<Character> it = map.keySet().iterator();
@@ -87,13 +81,13 @@ public class HuffmanCoding {
 		return root;
 	}
 
-	private void buildDictionary(List<CharacterCode> dictionary, Node tree, String path) {
+	private void buildDictionary(Map<Character, String> dictionary, Node tree, String path) {
 		if (!tree.isLeafNode()) {
 			buildDictionary(dictionary, tree.getLeft(), path + "0");
 			buildDictionary(dictionary, tree.getRight(), path + "1");
 		} else if (path.isEmpty())
-			dictionary.add(new CharacterCode(tree.getCharacter(), "1"));
+			dictionary.put(tree.getCharacter(), "1");
 		else
-			dictionary.add(new CharacterCode(tree.getCharacter(), path));
+			dictionary.put(tree.getCharacter(), path);
 	}
 }

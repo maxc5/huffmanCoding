@@ -1,8 +1,5 @@
 package com.app.huffmancoding;
 
-import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
@@ -13,7 +10,6 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.transform.Scale;
-import javafx.util.Callback;
 
 public class EncodeController {
 
@@ -38,23 +34,41 @@ public class EncodeController {
     private Group group;
 
     @FXML
-    private ScrollPane scrollPane;
-
-
-    @FXML
     public void initialize() {
-        characterColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<CharacterCode, Character>, ObservableValue<Character>>() {
-            @Override
-            public ObservableValue<Character> call(TableColumn.CellDataFeatures<CharacterCode, Character> cellData) {
-                return new ReadOnlyObjectWrapper<Character>(cellData.getValue().getCharacter());
-            }
+//        characterColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<CharacterCode, Character>, ObservableValue<Character>>() {
+//            @Override
+//            public ObservableValue<Character> call(TableColumn.CellDataFeatures<CharacterCode, Character> cellData) {
+//                return new ReadOnlyObjectWrapper<Character>(cellData.getValue().getCharacter());
+//            }
+//        });
+//        codeColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<CharacterCode, String>, ObservableValue<String>>() {
+//            @Override
+//            public ObservableValue<String> call(TableColumn.CellDataFeatures<CharacterCode, String> cellData) {
+//                return new ReadOnlyStringWrapper(cellData.getValue().getCode());
+//            }
+//        });
+
+//        characterColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<CharacterCode, Character>, ObservableValue<Character>>() {
+//            @Override
+//            public ObservableValue<Character> call(TableColumn.CellDataFeatures<CharacterCode, Character> cellData) {
+//                return new ReadOnlyObjectWrapper<Character>(cellData.getValue().getCharacter());
+//            }
+//        });
+//        codeColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<CharacterCode, String>, ObservableValue<String>>() {
+//            @Override
+//            public ObservableValue<String> call(TableColumn.CellDataFeatures<CharacterCode, String> cellData) {
+//                return new ReadOnlyStringWrapper(cellData.getValue().getCode());
+//            }
+//        });
+
+        characterColumn.setCellValueFactory(cellData -> {
+            return cellData.getValue().characterProperty();
         });
-        codeColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<CharacterCode, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<CharacterCode, String> cellData) {
-                return new ReadOnlyStringWrapper(cellData.getValue().getCode());
-            }
+        codeColumn.setCellValueFactory(cellData -> {
+            return cellData.getValue().codeProperty();
         });
+
+
         group.getTransforms().add(scale);
         // Dibujar en el canvas
         double canvasWidth = canvas.getWidth();
@@ -116,6 +130,7 @@ public class EncodeController {
         // Limpiar la tabla
         tableView.getItems().clear();
         // Agregar todos los elementos de la lista a la tabla
-        tableView.getItems().addAll(response.getDictionary());
+        response.getDictionary().forEach((key, value) -> tableView.getItems().add(new CharacterCode(key, value)));
+
     }
 }

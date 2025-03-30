@@ -10,34 +10,35 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane style="-fx-background-color: linear-gradient(to bottom, #333456, #2b2d42); -fx-padding: 15;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane style="-fx-background-color: linear-gradient(to bottom, #333456, #2b2d42); -fx-padding: 15;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.huffmancoding.DecodeController">
    <top>
       <VBox spacing="12" style="-fx-padding: 15; -fx-background-color: rgba(43,45,66,0.8); -fx-border-radius: 5; -fx-background-radius: 5;">
          <HBox alignment="CENTER_LEFT" maxWidth="Infinity" spacing="10">
             <Label style="-fx-font-weight: bold; -fx-text-fill: white;" text="cadena de bits:" />
-            <TextField fx:id="bitsField" promptText="Ingrese la cadena..." style="-fx-background-radius: 3; -fx-border-radius: 3;" HBox.hgrow="ALWAYS" />
+            <TextField fx:id="txtBitString" promptText="Ingrese la cadena..." style="-fx-background-radius: 3; -fx-border-radius: 3;" HBox.hgrow="ALWAYS" />
          </HBox>
          <HBox alignment="CENTER_LEFT" spacing="10">
             <Label style="-fx-font-weight: bold; -fx-text-fill: white;" text="caracter:" />
-            <TextField fx:id="charField" promptText="Ingrese el caracter..." style="-fx-background-radius: 3; -fx-border-radius: 3;" />
+            <TextField fx:id="txtCharacter" promptText="ingrese el caracter..." style="-fx-background-radius: 3; -fx-border-radius: 3;" />
             <Label style="-fx-font-weight: bold; -fx-text-fill: white;" text="código:" />
-            <TextField fx:id="codeField" promptText="Ingrese el código..." style="-fx-background-radius: 3; -fx-border-radius: 3;" />
-            <Button style="-fx-background-color: #6d72c3; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 3;" text="Agregar" />
+            <TextField fx:id="txtCode" promptText="ingrese el código..." style="-fx-background-radius: 3; -fx-border-radius: 3;" />
+            <Button onMouseClicked="#addCharacterCode" style="-fx-background-color: #6d72c3; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 3;" text="Agregar" />
          </HBox>
+         <Button onMouseClicked="#decode" style="-fx-background-color: #6d72c3; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 3;" text="decodificar" textAlignment="RIGHT" />
       </VBox>
    </top>
    <left>
-      <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <columns>
-            <TableColumn prefWidth="86.0" text="C1" />
-            <TableColumn prefWidth="113.0" text="C2" />
+            <TableColumn fx:id="characterColumn" prefWidth="86.0" text="caracter" />
+            <TableColumn fx:id="codeColumn" prefWidth="113.0" text="codigo" />
          </columns>
       </TableView>
    </left>
    <center>
       <VBox spacing="5" style="-fx-padding: 10;" BorderPane.alignment="CENTER">
          <Label style="-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: white;" text="Resultado:" />
-         <TextArea fx:id="resultContent" editable="false" style="-fx-font-size: 13; -fx-background-color: white; -fx-border-color: #d0d0d0; -fx-border-radius: 3;" wrapText="true" VBox.vgrow="ALWAYS" />
+         <TextArea fx:id="decodedBitString" editable="false" style="-fx-font-size: 13; -fx-background-color: white; -fx-border-color: #d0d0d0; -fx-border-radius: 3;" wrapText="true" VBox.vgrow="ALWAYS" />
       </VBox>
    </center>
 </BorderPane>
