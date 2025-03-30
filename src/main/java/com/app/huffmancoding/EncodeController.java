@@ -4,20 +4,16 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.transform.Scale;
 import javafx.util.Callback;
-
-
-import java.util.List;
-import java.util.Map;
 
 public class EncodeController {
 
@@ -25,17 +21,24 @@ public class EncodeController {
     private static final int VERTICAL_SPACING = 80;
 
     @FXML
-    private Canvas myCanvas;
+    private Canvas canvas;
     @FXML
     private TextField input;
     @FXML
-    private Label bitStringLabel;
+    private TextArea bitString;
     @FXML
     private TableView<CharacterCode> tableView;
     @FXML
     private TableColumn<CharacterCode, Character> characterColumn;
     @FXML
     private TableColumn<CharacterCode, String> codeColumn;
+    private double scaleFactor = 1.0;
+    private final Scale scale = new Scale(1, 1, 0, 0);
+    @FXML
+    private Group group;
+
+    @FXML
+    private ScrollPane scrollPane;
 
 
     @FXML
@@ -52,13 +55,25 @@ public class EncodeController {
                 return new ReadOnlyStringWrapper(cellData.getValue().getCode());
             }
         });
-
-//        priceColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Movie, Double>, ObservableValue<Double>>() {
-//            @Override
-//            public ObservableValue<Double> call(TableColumn.CellDataFeatures<Movie, Double> param) {
-//                return param.getValue().priceProperty();
-//            }
-//        });
+        group.getTransforms().add(scale);
+        // Dibujar en el canvas
+        double canvasWidth = canvas.getWidth();
+        double centerX = canvasWidth / 2;
+        // Obtener el contexto gráfico y traducir horizontalmente para centrar futuros dibujos
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.translate(centerX / 2, 0);
+        // Manejar el zoom con la rueda del mouse
+        group.setOnScroll((ScrollEvent event) -> {
+            double delta = event.getDeltaY();
+            if (delta > 0) {
+                scaleFactor *= 1.1;  // Zoom in
+            } else {
+                scaleFactor /= 1.1;  // Zoom out
+            }
+            scale.setX(scaleFactor);
+            scale.setY(scaleFactor);
+            event.consume();
+        });
     }
 
     private void drawTree(GraphicsContext gc, Node node, double x, double y, double horizontalOffset) {
@@ -76,7 +91,7 @@ public class EncodeController {
         gc.fillText(text, x - 10, y + 5);
 
         if (node.getLeft() != null) {
-            double childX = x - horizontalOffset * 0.7;
+            double childX = x - horizontalOffset * 1.3;
             double childY = y + VERTICAL_SPACING;
             gc.strokeLine(x, y + NODE_RADIUS, childX, childY - NODE_RADIUS);
             gc.fillText("0", (x + childX) / 2, (y + childY - 10) / 2); // Etiqueta para la arista izquierda
@@ -84,7 +99,7 @@ public class EncodeController {
         }
 
         if (node.getRight() != null) {
-            double childX = x + horizontalOffset * 0.7;
+            double childX = x + horizontalOffset * 1.3;
             double childY = y + VERTICAL_SPACING;
             gc.strokeLine(x, y + NODE_RADIUS, childX, childY - NODE_RADIUS);
             gc.fillText("1", (x + childX) / 2, (y + childY - 10) / 2); // Etiqueta para la arista derecha
@@ -93,11 +108,11 @@ public class EncodeController {
     }
 
     public void encode(MouseEvent mouseEvent) {
-        GraphicsContext gc = myCanvas.getGraphicsContext2D();
-        gc.clearRect(0, 0, myCanvas.getWidth(), myCanvas.getHeight());
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         Response response = new HuffmanCoding().encode(input.getText().toCharArray());
         drawTree(gc, response.getTree(), 250, 50, 200);
-        bitStringLabel.setText("cadena de bits: "+ response.getBitString());
+        bitString.setText(response.getBitString());
         // Limpiar la tabla
         tableView.getItems().clear();
         // Agregar todos los elementos de la lista a la tabla

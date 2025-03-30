@@ -1,8 +1,5 @@
 package com.app.huffmancoding;
 
-import com.almasb.fxgl.core.collection.Array;
-import com.sun.source.tree.Tree;
-
 import java.util.*;
 
 

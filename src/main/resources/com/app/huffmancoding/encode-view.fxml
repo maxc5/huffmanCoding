@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 
-<BorderPane style="-fx-background-color: linear-gradient(to bottom, #333456, #2b2d42); -fx-padding: 15;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.huffmancoding.EncodeController">
+<BorderPane prefHeight="571.0" prefWidth="848.0" style="-fx-background-color: linear-gradient(to bottom, #333456, #2b2d42); -fx-padding: 15;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.huffmancoding.EncodeController">
 
     <!-- Top: Barra de herramientas -->
     <top>
@@ -26,7 +29,7 @@
 
     <!-- Left: Panel lateral -->
     <left>
-        <TableView fx:id="tableView" maxWidth="300.0" prefHeight="500.0" prefWidth="210.0">
+        <TableView fx:id="tableView" maxWidth="300.0" prefHeight="331.0" prefWidth="210.0">
             <columns>
                 <TableColumn fx:id="characterColumn" editable="false" maxWidth="100.0" prefWidth="100.0" resizable="false" sortable="false" text="caracter" />
                 <TableColumn fx:id="codeColumn" maxWidth="100.0" prefWidth="100.0" resizable="false" text="codigo" />
@@ -39,15 +42,24 @@
 
     <!-- Center: Área de visualización del árbol -->
     <center>
-        <StackPane fx:id="canvasContainer" style="-fx-background-color: linear-gradient(to bottom right, #f8f7f9, #e5e5e5); -fx-border-color: #6d72c3; -fx-border-width: 2; -fx-border-radius: 5; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);">
-            <Canvas fx:id="myCanvas" height="400.0" width="600.0" StackPane.alignment="CENTER" />
-        </StackPane>
+    <ScrollPane fx:id="scrollPane" pannable="true">
+        <Group fx:id="group">
+            <Canvas fx:id="canvas" height="1000" width="1200" />
+        </Group>
+    </ScrollPane>
     </center>
 
     <!-- Bottom: Barra de estado -->
     <bottom>
         <StackPane style="-fx-background-color: rgba(43,45,66,0.8); -fx-padding: 10;">
-            <Label fx:id="bitStringLabel" style="-fx-text-fill: #f8f7f9; -fx-font-size: 14px; -fx-font-weight: bold; -fx-font-family: 'Consolas'; -fx-padding: 5 15; -fx-background-radius: 3; -fx-background-color: rgba(109,114,195,0.3);" text="cadena de bits: " StackPane.alignment="TOP_LEFT" />
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 0;">
+                    <children>
+                        <Label style="-fx-text-fill: white; -fx-font-weight: bold;" text="cadena de bits" />
+                        <TextArea fx:id="bitString" editable="false" prefHeight="109.0" prefWidth="670.0" wrapText="true" HBox.hgrow="ALWAYS" />
+                    </children>
+                </HBox>
+            </children>
         </StackPane>
     </bottom>
 </BorderPane>

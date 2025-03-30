@@ -1,8 +1,5 @@
 package com.app.huffmancoding;
 
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-
 public class CharacterCode {
     private final char character;
     private final String code;

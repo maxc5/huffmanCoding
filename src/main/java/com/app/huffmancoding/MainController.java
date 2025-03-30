@@ -3,16 +3,13 @@ package com.app.huffmancoding;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 
 public class MainController {
     @FXML
-    private BorderPane bp;
+    private BorderPane borderPane;
 
 //    @FXML
 //    private AnchorPane ap;
@@ -32,13 +29,13 @@ public class MainController {
     }
 
     private void loadPage(String page){
-        Parent root = null;
         try {
-            //FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("main-view.fxml"));
-            root = FXMLLoader.load(getClass().getResource(page+".fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource(page+".fxml"));
+            borderPane.setCenter(root);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            System.exit(0);
         }
-        bp.setCenter(root);
+
     }
 }
