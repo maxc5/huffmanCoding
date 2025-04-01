@@ -32,6 +32,7 @@ public class EncodeController {
     private final Scale scale = new Scale(1, 1, 0, 0);
     @FXML
     private Group group;
+    private HuffmanCoding huffmanCoding;
 
     @FXML
     public void initialize() {
@@ -88,6 +89,7 @@ public class EncodeController {
             scale.setY(scaleFactor);
             event.consume();
         });
+        this.huffmanCoding = new HuffmanCoding();
     }
 
     private void drawTree(GraphicsContext gc, Node node, double x, double y, double horizontalOffset) {
@@ -124,13 +126,13 @@ public class EncodeController {
     public void encode(MouseEvent mouseEvent) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        Response response = new HuffmanCoding().encode(input.getText().toCharArray());
-        drawTree(gc, response.getTree(), 250, 50, 200);
-        bitString.setText(response.getBitString());
+        Result result = huffmanCoding.encode(input.getText().toCharArray());
+        drawTree(gc, result.getTree(), 250, 50, 200);
+        bitString.setText(result.getBitString());
         // Limpiar la tabla
         tableView.getItems().clear();
         // Agregar todos los elementos de la lista a la tabla
-        response.getDictionary().forEach((key, value) -> tableView.getItems().add(new CharacterCode(key, value)));
+        result.getTable().forEach((key, value) -> tableView.getItems().add(new CharacterCode(key, value)));
 
     }
 }

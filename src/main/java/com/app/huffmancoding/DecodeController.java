@@ -51,11 +51,11 @@ public class DecodeController {
     }
 
     public void decode(MouseEvent mouseEvent) {
-        Map<String,Character> dictionary = new HashMap<String,Character>();
+        Map<String,Character> table = new HashMap<String,Character>();
         for (CharacterCode item : tableView.getItems()) {
-            dictionary.put(item.getCode(),item.getCharacter());
+            table.put(item.getCode(),item.getCharacter());
         }
 
-        decodedBitString.setText(huffmanCoding.decode(txtBitString.getText(),dictionary));
+        decodedBitString.setText(huffmanCoding.decode(txtBitString.getText(),table));
     }
 }

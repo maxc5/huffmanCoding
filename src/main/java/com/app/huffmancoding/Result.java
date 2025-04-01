@@ -3,16 +3,16 @@ package com.app.huffmancoding;
 
 import java.util.Map;
 
-public class Response {
+public class Result {
 	private Node tree;
 	private String bitString;
-	private Map<Character, String> dictionary;
+	private Map<Character, String> table;
 
-	public Response(Node tree, String bitString, Map<Character, String> dictionary) {
+	public Result(Node tree, String bitString, Map<Character, String> table) {
 		super();
 		this.tree = tree;
 		this.bitString = bitString;
-		this.dictionary = dictionary;
+		this.table = table;
 	}
 	public Node getTree() {
 		return tree;
@@ -26,10 +26,10 @@ public class Response {
 	public void setBitString(String bitString) {
 		this.bitString = bitString;
 	}
-	public Map<Character, String> getDictionary() {
-		return dictionary;
+	public Map<Character, String> getTable() {
+		return table;
 	}
-	public void setDictionary(Map<Character, String> dictionary) {
-		this.dictionary = dictionary;
+	public void setTable(Map<Character, String> table) {
+		this.table = table;
 	}
 }
